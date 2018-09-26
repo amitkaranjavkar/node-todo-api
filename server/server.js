@@ -6,6 +6,7 @@ const { mongoose } = require('./db/mongoose');
 const { Todo } = require('../server/models/todos');
 const { Users } = require('../server/models/users');
 const { ObjectID } = require('mongodb');
+const { authenticate } = require('../server/middleware/authenticate')
 
 var app = express();
 
@@ -109,6 +110,10 @@ app.post('/users', (req, res) => {
         res.status(400).send();
     }
 });
+
+app.get('/users/me', authenticate, (req, res) => {
+    res.send(req.user);
+})
 
 app.listen(3000, () => {
     console.log('Server running on port 3000');
